@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shreeram Parab</title>
+    <!-- Tailwind CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Apply Inter font, smooth scrolling, and ensure full height capability */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #0d1117; /* Base background for safety */
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        /* Defines the fixed header position */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            height: 5rem; /* Matches header height */
+            background-color: #161b22; 
+            border-bottom: 1px solid #334155;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Defines the main scrollable content area */
+        .content-container {
+            /* Start content 5rem (header height) below the top */
+            margin-top: 5rem;
+            height: calc(100vh - 5rem);
+            overflow-y: auto; /* This is where the scroll happens */
+            background-color: #0d1117; /* Main background color for content */
+            scroll-behavior: smooth;
+        }
+
+        /* Fix for Anchor Links: When scrolling to an ID, the content will start 5rem down */
+        .content-container section[id] {
+            scroll-margin-top: 5rem; 
+        }
+
+        /* Custom card style for a clean, modern look (secondary color from Dash) */
+        .portfolio-card {
+            background-color: #1e293b; /* A dark slate blue */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #334155; /* Subtle border */
+        }
+        /* Hover effect for cards */
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom primary color to match Dash's 'info' (a bright teal/cyan) */
+        .text-info-primary {
+            color: #20c997; 
+        }
+        
+        /* Hero section will fill the remaining height of the viewport */
+        #hero {
+            min-height: calc(100vh - 5rem);
+        }
+        
+        /* All subsequent sections only need min-h-screen to maintain the "full page" feel */
+        section:not(#hero) {
+            min-height: 100vh;
+        }
+
+        /* Styling for the scrollbar */
+        .content-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-container::-webkit-scrollbar-thumb {
+            background-color: #334155;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Header / Navbar Section (FIXED TOP) -->
+    <header id="home" class="fixed-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center h-full">
+            <!-- Navbar Brand: Links to the Hero section -->
+            <a href="#hero" id="home-link" class="hover:text-teal-300 transition-colors">
+                <h1 class="text-xl font-bold text-teal-400">Shreeram Parab - Student • Data Analytics</h1>
+            </a>
+            
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="#projects" class="text-gray-300 hover:text-teal-400 transition-colors font-medium">Projects</a>
+                <a href="#education" class="text-gray-300 hover:text-teal-400 transition-colors font-medium">Education</a>
+                <a href="#experience" class="text-gray-300 hover:text-teal-400 transition-colors font-medium">Experience</a>
+                <a href="#skills" class="text-gray-300 hover:text-teal-400 transition-colors font-medium">Skills</a>
+                <a href="#about-contact" class="text-gray-300 hover:text-teal-400 transition-colors font-medium">Contact</a>
+                <!-- Resume Button -->
+                <a href="" download="Shreeram_Parab_Resume.pdf"
+                    class="bg-teal-600 text-white font-semibold py-2 px-4 rounded-full hover:bg-teal-500 transition-all hover-lift text-sm">
+                    Download Resume
+                </a>
+            </nav>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-teal-400">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-center border-t border-gray-700 bg-[#161b22]">
+            <a href="#projects" class="block py-2 text-gray-300 hover:bg-gray-700 rounded transition-colors">Projects</a>
+            <a href="#education" class="block py-2 text-gray-300 hover:bg-gray-700 rounded transition-colors">Education</a>
+            <a href="#experience" class="block py-2 text-gray-300 hover:bg-gray-700 rounded transition-colors">Experience</a>
+            <a href="#skills" class="block py-2 text-gray-300 hover:bg-gray-700 rounded transition-colors">Skills</a>
+            <a href="#about-contact" class="block py-2 text-gray-300 hover:bg-gray-700 rounded transition-colors">Contact</a>
+            <a href="./assets/Rutuja_More_Resume.pdf" download="Rutuja_More_Resume.pdf"
+                class="block py-2 bg-teal-600 text-white font-semibold rounded hover:bg-teal-500 transition-all mt-2">
+                Download Resume
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Scrollable Content Container -->
+    <div class="content-container">
+
+        <main>
+
+            <!-- 1. Hero Section (ID: hero) - Full Viewport Height minus Header Height -->
+            <section id="hero" class="min-h-[calc(100vh-5rem)] bg-[#0d1117] flex items-center justify-center p-4"> 
+                
+                <div class="max-w-7xl mx-auto w-full flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-10 items-center justify-center py-10">
+                    
+                    <!-- Image Column (Right Aligned on Desktop, Top of Content on Mobile) -->
+                    <div class="md:col-span-5 order-1 md:order-2 flex justify-center md:justify-end py-6 md:py-0">
+                        <img 
+                            src="./assets/Image.jpeg" 
+                            onerror="this.onerror=null; this.src='https://placehold.co/224x224/1e2b3e/cccccc?text=Profile+Image';" 
+                            alt="Shreeram Paarab Profile Picture" 
+                            class="w-56 h-56 md:w-72 md:h-72 object-cover rounded-full border-4 border-info-primary shadow-xl"
+                        >
+                    </div>
+
+                    <!-- Text/Logos Column (Left Aligned on Desktop) -->
+                    <div class="md:col-span-7 space-y-4 order-2 md:order-1 text-center md:text-left">
+                        <h1 class="text-4xl sm:text-6xl font-extrabold text-white">Hello, I'm Shreeram Parab</h1>
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-info-primary mb-4">A Passionate Data Analytic Geek</h2>
+                        
+                        <!-- FIX: Explicitly centered text on mobile for better appearance -->
+                        <p class="text-lg text-gray-400 leading-relaxed max-w-xl mx-auto md:mx-0 text-center md:text-left">
+                            I transform unseen patterns into strategic advantage.
+                        </p>
+                        
+                        <!-- Social Links -->
+                        <div class="flex flex-wrap gap-5 pt-6 justify-center md:justify-start">
+                            <!-- LinkedIn -->
+                            <a href="https://www.linkedin.com/in/shreeram-parab-90a14a377/" target="_blank" aria-label="LinkedIn" class="text-[#0a66c2] hover:text-teal-400 transition-colors">
+                                <i class="fab fa-linkedin text-3xl"></i>
+                            </a> 
+                            <!-- GitHub -->
+                            <a href="https://github.com/shreeramparab" target="_blank" aria-label="GitHub" class="text-white hover:text-teal-400 transition-colors">
+                                <i class="fab fa-github text-3xl"></i>
+                            </a> 
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 2. Projects Section (ID: projects) -->
+            <section id="projects" class="min-h-screen bg-[#1e1e2f] flex items-center justify-center p-4">
+                <!-- FIX: Reduced vertical padding on mobile (py-10) -->
+                <div class="max-w-7xl mx-auto w-full py-10 md:py-20">
+                    <h2 class="text-4xl font-extrabold text-info-primary mb-10 text-center">Projects</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Project Card 1: Cafe Sales Dashboard -->
+                        <div class="portfolio-card p-6 rounded-xl hover-lift flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-semibold text-teal-400 mb-3 border-b border-gray-600 pb-2">Cafe Sales Dashboard in Excel</h3>
+                                <!-- FIX: Removed text-justify and reduced mb-4 to mb-2 for tighter spacing -->
+                                <p class="text-gray-400 mb-2 text-sm leading-normal text-left">
+                                    Built an interactive Excel Cafe Sales Dashboard by cleaning raw sales data, creating calculated fields, analyzing trends with PivotTables, and visualizing monthly revenue, top categories, payment mix, and average order value using charts and slicers in a cafe-themed layout.
+                                </p>
+                            </div>
+                            <a href="./assets/cafe-sales.png" target="_blank" 
+                                class="mt-4 inline-block bg-teal-600 text-white font-semibold py-2 px-4 rounded hover:bg-teal-500 transition-colors text-center text-sm">
+                                View Dashboard Image
+                            </a>
+                        </div>
+                        
+                        <!-- NEW Project Card 2: Upcoming Project -->
+                        <div class="portfolio-card p-6 rounded-xl flex flex-col justify-between text-center border-dashed border-2 border-teal-600">
+                            <div>
+                                <h3 class="text-xl font-semibold text-teal-400 mb-3 border-b border-gray-600 pb-2">Upcoming Project</h3>
+                                <p class="text-gray-400 mb-4 text-sm leading-relaxed text-center py-8">
+                                    <i class="fas fa-hammer text-4xl text-teal-500 mb-4 opacity-75"></i><br>
+                                    Stay Tuned! Building something exciting...
+                                </p>
+                            </div>
+                            <button disabled
+                                class="mt-4 inline-block bg-gray-700 text-gray-400 font-semibold py-2 px-4 rounded text-center text-sm cursor-not-allowed">
+                                In Progress
+                            </button>
+                        </div>
+                        
+                        <!-- NEW Project Card 3: Upcoming Project -->
+                        <div class="portfolio-card p-6 rounded-xl flex flex-col justify-between text-center border-dashed border-2 border-teal-600">
+                            <div>
+                                <h3 class="text-xl font-semibold text-teal-400 mb-3 border-b border-gray-600 pb-2">Upcoming Project</h3>
+                                <p class="text-gray-400 mb-4 text-sm leading-relaxed text-center py-8">
+                                    <i class="fas fa-chart-line text-4xl text-teal-500 mb-4 opacity-75"></i><br>
+                                    Stay Tuned! Building something exciting...
+                                </p>
+                            </div>
+                            <button disabled
+                                class="mt-4 inline-block bg-gray-700 text-gray-400 font-semibold py-2 px-4 rounded text-center text-sm cursor-not-allowed">
+                                In Progress
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Education Section (ID: education) -->
+            <section id="education" class="min-h-screen bg-[#0d1117] flex items-center justify-center p-4">
+                <!-- FIX: Reduced vertical padding on mobile (py-10) -->
+                <div class="max-w-7xl mx-auto w-full py-10 md:py-20">
+                    <h2 class="text-4xl font-extrabold text-white mb-10 text-center">Education</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- MS Card -->
+                        <div class="portfolio-card p-6 rounded-xl hover-lift">
+                            <h3 class="text-xl font-semibold text-info-primary mb-1 text-left">Master of Science in Data Analytics</h3>
+                            <p class="text-sm text-gray-500 mb-4 text-left">University of Mumbai (2025 - 2027)</p>
+                            <!-- FIX: Removed sm:space-y-2 and text-justify for tighter, left-aligned bullet points -->
+                            <ul class="list-disc list-outside ml-6 text-gray-400 space-y-1 text-sm text-left">
+                                <li>Specialization in Time Series Analysis, Machine Learning, Deep Learning, and Data Visualization. Coursework includes Regression, Statistical Methods, Data Mining, and NLP.</li>
+                            </ul>
+                        </div>
+
+                        <!-- B.Tech Card -->
+                        <div class="portfolio-card p-6 rounded-xl hover-lift">
+                            <h3 class="text-xl font-semibold text-info-primary mb-1 text-left">Bachelor of Technology in Information Technology </h3>
+                            <p class="text-sm text-gray-500 mb-4 text-left">Model College Of Science & Commerce (2022-2025) </p>
+                            <!-- FIX: Removed sm:space-y-2 and text-justify for tighter, left-aligned bullet points -->
+                            <ul class="list-disc list-outside ml-6 text-gray-400 space-y-1 text-sm text-left">
+                                <li>Specialization in Information Technology and Software Development.</li>
+                                <li>Gained hands-on experience through practical projects and real-world applications.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 4. Experience Section (ID: experience)
+            <section id="experience" class="min-h-screen bg-[#1e1e2f] flex items-center justify-center p-4">
+                <div class="max-w-7xl mx-auto w-full py-10 md:py-20">
+                    <h2 class="text-4xl font-extrabold text-info-primary mb-10 text-center">Experience</h2>
+                    <div class="max-w-4xl mx-auto">
+                        <div class="portfolio-card p-8 rounded-xl hover-lift">
+                            <h3 class="text-2xl font-semibold text-info-primary text-left">Senior Data Analyst</h3>
+                            <p class="text-sm text-gray-500 mb-4 text-left">Skandha Media Services Pvt Ltd. (2023 - 2025)</p>
+                            <ul class="list-disc list-outside ml-6 text-gray-400 space-y-2 text-base text-left">
+                                <li>Led a team of 3 analysts, working with different sports clients using multiple tools, improving project delivery efficiency by 20%.</li>
+                                <li>Developed real-time dashboards using ELK Stack, Grafana, and Datadog, increasing ad compliance tracking accuracy by 95%.</li>
+                                <li>Automated reporting processes with Python, reducing manual effort by 40% and improving operational efficiency.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+            
+            <!-- 5. Skills Section (ID: skills) -->
+            <section id="skills" class="min-h-screen bg-[#0d1117] flex items-center justify-center p-4">
+                <!-- FIX: Reduced vertical padding on mobile (py-10) -->
+                <div class="max-w-7xl mx-auto w-full py-10 md:py-20">
+                    <h2 class="text-4xl font-extrabold text-white mb-10 text-center">Skills</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Technical Expertise Card -->
+                        <div class="portfolio-card p-6 rounded-xl hover-lift">
+                            <h3 class="text-xl font-semibold text-info-primary mb-4 border-b border-gray-600 pb-2 text-left">Technical Expertise</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">Excel</span>
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">MySQL</span>
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">Power BI</span>
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">Python (Pandas, NumPy, Matplotlib)</span>
+                            <!--<span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">ELK Stack (Elasticsearch, Logstash, Kibana)</span>
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">Linux (Ubuntu)</span>
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">Grafana</span>
+                                <span class="px-3 py-1 bg-teal-800/70 text-white font-medium rounded-full text-sm">Datadog</span>-->
+                            </div>
+                        </div>
+
+                        <!-- Methodology & Concepts Card -->
+                        <div class="portfolio-card p-6 rounded-xl hover-lift">
+                            <h3 class="text-xl font-semibold text-info-primary mb-4 border-b border-gray-600 pb-2 text-left">Methodology & Concepts</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-yellow-700/70 text-white font-medium rounded-full text-sm">Data Analysis, Cleaning & Preprocessing</span>
+                                <span class="px-3 py-1 bg-yellow-700/70 text-white font-medium rounded-full text-sm">Statistical & Predictive Modeling</span>
+                                <span class="px-3 py-1 bg-yellow-700/70 text-white font-medium rounded-full text-sm">Machine Learning & Data Mining</span>
+                                <span class="px-3 py-1 bg-yellow-700/70 text-white font-medium rounded-full text-sm">Business Insights & Decision Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. About & Contact Section (ID: about-contact) -->
+            <section id="about-contact" class="min-h-screen bg-[#1e1e2f] flex items-center justify-center p-4">
+                <!-- FIX: Reduced vertical padding on mobile (py-10) and inner card spacing -->
+                <div class="max-w-4xl mx-auto w-full py-10 md:py-20 portfolio-card p-4 sm:p-8 rounded-xl shadow-2xl">
+                    
+                    <h2 class="text-4xl font-extrabold text-info-primary mb-10 text-center">About Me & Contact</h2>
+
+                    <h3 class="text-2xl font-semibold text-info-primary mb-3 text-left">About Me</h3>
+                    <!-- FIX: Removed text-justify and reduced bottom margin/padding for better density -->
+                    <p class="text-gray-300 leading-relaxed mb-4 border-b border-gray-600 pb-4 text-left">
+                        Hello, I’m Shreeram Parab, a passionate Data Analyst geek. During my college days, I was exploring different fields to find my true interest, and in my final year, a subject on Business Intelligence sparked my curiosity. Through practical projects and hands-on work, I discovered my passion for analyzing data and turning it into actionable insights. Since then, I have focused on building my expertise in data analytics, working on real-world projects, and understanding the critical role data plays in decision-making. Currently, I am pursuing a Master of Science in Data Analytics from Mumbai University to further enhance my skills and knowledge in the field.
+                    </p>
+                    
+                    <h3 class="text-2xl font-semibold text-info-primary mb-4 text-left">Contact</h3>
+                    
+                    <!-- Contact Information -->
+                    <div class="space-y-2">
+                        <!-- Mobile Number -->
+                        <p class="flex items-center text-gray-300">
+                            <i class="fas fa-phone-alt text-info-primary text-xl w-6"></i>
+                            <a href="tel:+918451962848" class="hover:text-white transition-colors text-lg ml-2">+91 8451962848</a>
+                        </p>
+                        
+                        <!-- Email -->
+                        <p class="flex items-center text-gray-300">
+                            <i class="fas fa-envelope text-info-primary text-xl w-6"></i>
+                            <a href="mailto:shreeramparab18@gmail.com" class="hover:text-white transition-colors text-lg ml-2">shreeramparab18@gmail.com</a>
+                        </p>
+                        
+                        <!-- Location -->
+                        <p class="flex items-center text-gray-300">
+                            <i class="fas fa-map-marker-alt text-info-primary text-xl w-6"></i>
+                            <span class="text-lg ml-2">Mumbai, Maharashtra</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer (Standard Height) -->
+        <footer class="bg-[#161b22] border-t border-gray-700/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-400 text-sm">
+                &copy; Shreeram Parab. All rights reserved.
+            </div>
+        </footer>
+
+    </div> <!-- End of content-container -->
+    
+    <!-- JavaScript for Mobile Menu Toggle and Smooth Scrolling -->
+    <script>
+        const container = document.querySelector('.content-container');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggles the mobile menu on click
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Closes the mobile menu when a navigation link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Universal Smooth Scrolling Logic for all internal anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Check if the link is only for the Resume download button and skip if it is a download link.
+                if (this.getAttribute('download')) return;
+
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                
+                if (targetId === '#hero') {
+                    // For the #hero link, scroll the container to the very top (0)
+                    container.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
+                
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement && container) {
+                    // Calculate the position relative to the container.
+                    // targetElement.offsetTop is the distance from the top of the content-container to the section.
+                    // We manually subtract 80px (5rem) which is the scroll-margin-top value
+                    const offset = targetElement.offsetTop - 80; // 5rem * 16px/rem = 80px
+
+                    container.scrollTo({
+                        top: offset,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
