@@ -50,18 +50,32 @@ document.addEventListener('DOMContentLoaded', function () {
     portraitWrap.addEventListener('mouseleave', ()=> portraitWrap.style.transform = '');
   }
   // Image modal helper
-  function openImageModal(src, title) {
+  function openImageModal(images, title, showArrows = true) {
+    // normalize to array
+    let imgs = [];
+    if (!images) imgs = ['images/myimage.jpg'];
+    else if (Array.isArray(images)) imgs = images.slice();
+    else if (typeof images === 'string') imgs = images.split(',').map(s => s.trim()).filter(Boolean);
+
     const overlay = document.createElement('div');
     overlay.className = 'image-modal-overlay';
 
     const modal = document.createElement('div');
     modal.className = 'image-modal';
 
+    // build thumbnails markup
+    const thumbsHtml = imgs.map((src, idx) => ` <img src="${src}" data-index="${idx}" class="image-modal-thumb ${idx===0? 'active':''}" alt=""/> `).join('');
+
+    // conditionally render arrow buttons
+    const arrowsHtml = showArrows ? '<button class="image-modal-prev" aria-label="Previous">&#8249;</button><button class="image-modal-next" aria-label="Next">&#8250;</button>' : '';
+
     modal.innerHTML = `
       <div style="position:relative">
         <button class="image-modal-close" aria-label="Close">&times;</button>
-        <div class="image-modal-body"><img src="${src}" alt="${title}" /></div>
-        <div class="image-modal-footer">${title}</div>
+        ${arrowsHtml}
+        <div class="image-modal-body"><img src="${imgs[0]}" alt="${title}" data-current-index="0"/></div>
+        <div class="image-modal-thumbs">${thumbsHtml}</div>
+        <div class="image-modal-footer"><span class="modal-title">${title}</span><span class="modal-counter">1/${imgs.length}</span></div>
       </div>
     `;
 
@@ -69,8 +83,43 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(overlay);
 
     const closeBtn = modal.querySelector('.image-modal-close');
+    const prevBtn = modal.querySelector('.image-modal-prev');
+    const nextBtn = modal.querySelector('.image-modal-next');
+    const mainImg = modal.querySelector('.image-modal-body img');
+    const thumbEls = Array.from(modal.querySelectorAll('.image-modal-thumb'));
+
+    function setIndex(i) {
+      if (i < 0) i = imgs.length - 1;
+      if (i >= imgs.length) i = 0;
+      mainImg.src = imgs[i];
+      mainImg.setAttribute('data-current-index', i);
+      thumbEls.forEach(t => t.classList.remove('active'));
+      const active = modal.querySelector(`.image-modal-thumb[data-index="${i}"]`);
+      if (active) active.classList.add('active');
+      // update counter
+      const counter = modal.querySelector('.modal-counter');
+      if (counter) counter.textContent = `${i + 1}/${imgs.length}`;
+    }
+
     if (closeBtn) closeBtn.addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); const idx = parseInt(mainImg.getAttribute('data-current-index')||0,10); setIndex(idx-1); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); const idx = parseInt(mainImg.getAttribute('data-current-index')||0,10); setIndex(idx+1); });
+
+    thumbEls.forEach(t => t.addEventListener('click', (ev) => { ev.stopPropagation(); const idx = parseInt(t.getAttribute('data-index'),10); setIndex(idx); }));
+
+    // keyboard controls
+    function onKey(e) {
+      if (e.key === 'Escape') overlay.remove();
+      if (e.key === 'ArrowLeft') { const idx = parseInt(mainImg.getAttribute('data-current-index')||0,10); setIndex(idx-1); }
+      if (e.key === 'ArrowRight') { const idx = parseInt(mainImg.getAttribute('data-current-index')||0,10); setIndex(idx+1); }
+    }
+    document.addEventListener('keydown', onKey);
+    // cleanup listener when overlay removed
+    const observer = new MutationObserver(()=>{
+      if (!document.body.contains(overlay)) document.removeEventListener('keydown', onKey);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   // view image buttons (stop propagation so card click still works separately)
@@ -78,9 +127,20 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const src = btn.dataset.img || btn.getAttribute('data-img') || 'images/myimage.jpg';
-      const title = btn.closest('.project-card')?.querySelector('h3')?.innerText || btn.closest('.cert-card')?.querySelector('h3')?.innerText || 'Image';
-      openImageModal(src, title);
+      // prefer data-imgs (comma separated) -> parse into array; fallback to data-img
+      const imgsAttr = btn.dataset.imgs || btn.getAttribute('data-imgs');
+      let imgs = null;
+      if (imgsAttr) imgs = imgsAttr.split(',').map(s => s.trim()).filter(Boolean);
+      else {
+        const single = btn.dataset.img || btn.getAttribute('data-img') || 'images/myimage.jpg';
+        imgs = [single];
+      }
+      const isProject = btn.closest('.project-card');
+      const isCert = btn.closest('.cert-card');
+      const title = isProject?.querySelector('h3')?.innerText || isCert?.querySelector('h3')?.innerText || 'Image';
+      // show arrows only for project modals
+      const showArrows = !!isProject;
+      openImageModal(imgs, title, showArrows);
     });
   });
 
