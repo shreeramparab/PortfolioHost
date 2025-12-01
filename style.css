@@ -82,9 +82,18 @@ body {
 }
 
 .social-icon i { font-size: 18px; }
+.fade-github i {
+    color: #000;        /* black */
+    opacity: 0.4;       /* fade level (0 = invisible, 1 = solid) */
+    transition: opacity 0.3s;
+}
+
+.fade-github:hover i {
+    opacity: 1;         /* fully visible on hover */
+}
 
 .social-icon.linkedin i { color: #0A66C2; } /* LinkedIn brand blue */
-.social-icon.github i { color: #181717; } /* GitHub black */
+.social-icon.github i { color: #030303; } /* GitHub black */
   .image-modal-prev, .image-modal-next {
     position: absolute;
     top: 50%;
@@ -241,6 +250,17 @@ body {
   padding: 36px;
   background: linear-gradient(180deg, #ffffff, #f0f6fa);
   border-radius: 12px;
+}
+
+.project-card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.project-actions {
+  margin-top: auto; /* pushes the button area to the bottom */
+  display: flex;
+  justify-content: flex-start; /* aligns the button to the right */
 }
 
 .projects h2 {
